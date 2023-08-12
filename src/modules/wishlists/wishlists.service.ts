@@ -23,14 +23,22 @@ export class WishlistsService {
   }
 
   async getWishListById(id: number) {
-    const wishlist = await this.wishlistsRepository.findOne({ where: { id }, relations: ['owner', 'items'] });
+    const wishlist = await this.wishlistsRepository.findOne({
+      where: { id },
+      relations: ['owner', 'items'],
+    });
     if (!wishlist) throw new NotFoundException('Вишлист не найден');
     return wishlist;
   }
 
-  async update(user, id: number, dto: WishlistDto): Promise<Wishlist | { message: string }> {
+  async update(
+    user,
+    id: number,
+    dto: WishlistDto,
+  ): Promise<Wishlist | { message: string }> {
     const wishlist = await this.getWishListById(id);
-    if (wishlist.owner.id !== user.id) return { message: 'Вы не можете редактировать чужой вишлист' };
+    if (wishlist.owner.id !== user.id)
+      return { message: 'Вы не можете редактировать чужой вишлист' };
     await this.wishlistsRepository.update(id, dto);
     return await this.getWishListById(id);
   }

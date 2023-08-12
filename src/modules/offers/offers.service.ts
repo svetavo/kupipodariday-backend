@@ -17,18 +17,29 @@ export class OffersService {
   ) {}
 
   async findOffers() {
-    const offers = await this.offersRepository.find({ relations: ['user', 'item'] });
+    const offers = await this.offersRepository.find({
+      relations: ['user', 'item'],
+    });
     offers.forEach((offer) => delete offer.user.password);
     return offers;
   }
 
-  async create(id: number, dto: CreateOfferDto): Promise<Offer | { message: string }> {
+  async create(
+    id: number,
+    dto: CreateOfferDto,
+  ): Promise<Offer | { message: string }> {
     const user = await this.userService.findById(id);
     const wish = await this.wishesService.findById(user, dto.itemId);
-    if (user.id === wish.owner.id) return { message: 'Нельзя скидываться на собственные подарки' };
+    if (user.id === wish.owner.id)
+      return { message: 'Нельзя скидываться на собственные подарки' };
     const raised = wish.raised + dto.amount;
-    if (raised > wish.price) return { message: 'Сумма собранных средств не может превышать стоимость подарка' };
-    await this.wishesService.update(user, wish.id, { raised: raised } as UpdateWishDto);
+    if (raised > wish.price)
+      return {
+        message: 'Сумма собранных средств не может превышать стоимость подарка',
+      };
+    await this.wishesService.update(user, wish.id, {
+      raised: raised,
+    } as UpdateWishDto);
     return this.offersRepository.save({ ...dto, user, item: wish });
   }
 

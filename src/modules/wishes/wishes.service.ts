@@ -20,7 +20,10 @@ export class WishesService {
   }
 
   async findById(user, id: number): Promise<Wish> {
-    const wish = await this.wishesRepository.findOne({ where: { id }, relations: ['owner', 'offers', 'offers.user'] });
+    const wish = await this.wishesRepository.findOne({
+      where: { id },
+      relations: ['owner', 'offers', 'offers.user'],
+    });
     if (!wish) throw new NotFoundException('Такое желание не найдено');
     if (user.id !== wish.owner.id) {
       delete wish.raised;
@@ -31,20 +34,32 @@ export class WishesService {
     return wish;
   }
 
-  async update(user, id: number, dto: UpdateWishDto): Promise<Wish | { message: string }> {
+  async update(
+    user,
+    id: number,
+    dto: UpdateWishDto,
+  ): Promise<Wish | { message: string }> {
     const wish = await this.findById(user, id);
-    if (user && wish.owner.id !== user.id) return { message: 'Вы не можете удалить чужое желание' };
+    if (user && wish.owner.id !== user.id)
+      return { message: 'Вы не можете удалить чужое желание' };
     if (wish.offers.length)
-      return { message: 'Вы не можете изменить стоимость подарка, сбор средств на который уже начался' };
+      return {
+        message:
+          'Вы не можете изменить стоимость подарка, сбор средств на который уже начался',
+      };
     await this.wishesRepository.update(id, dto);
     return await this.wishesRepository.findOne({ where: { id } });
   }
 
   async delete(user, id: number): Promise<{ message: string }> {
     const wish = await this.findById(user, id);
-    if (user && wish.owner.id !== user.id) return { message: 'Вы не можете удалить чужое желание' };
+    if (user && wish.owner.id !== user.id)
+      return { message: 'Вы не можете удалить чужое желание' };
     if (wish.offers.length >= 1)
-      return { message: 'Вы не можете удалить желание, сбор средств на которое уже начался' };
+      return {
+        message:
+          'Вы не можете удалить желание, сбор средств на которое уже начался',
+      };
     await this.wishesRepository.delete(id);
     return { message: 'Желание удалено' };
   }

@@ -10,7 +10,14 @@ import { OffersModule } from '../offers/offers.module';
 import { WishlistsModule } from '../wishlists/wishlists.module';
 
 @Module({
-  imports: [UsersModule, WishesModule, WishlistsModule, OffersModule, TypeOrmModule.forRoot(config), AuthModule],
+  imports: [
+    UsersModule,
+    WishesModule,
+    WishlistsModule,
+    OffersModule,
+    TypeOrmModule.forRoot(config),
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, UseGuards, Req, Param, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { WishesService } from './wishes.service';
 import { JwtGuard } from '../auth/guard';
 import { Wish } from './entities/wish.entity';
@@ -32,7 +42,11 @@ export class WishesController {
 
   @UseGuards(JwtGuard)
   @Patch(':id')
-  updateWish(@Req() { user }, @Param() params: any, @Body() dto: UpdateWishDto) {
+  updateWish(
+    @Req() { user },
+    @Param() params: any,
+    @Body() dto: UpdateWishDto,
+  ) {
     return this.wishesServis.update(user, params.id, dto);
   }
 

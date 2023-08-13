@@ -28,8 +28,11 @@ export class AuthService {
       delete user.password;
       return user;
     } catch (error) {
-      if (error.code === '23505') {
-        throw new ForbiddenException(`${error.detail}`);
+      if (error.code === '23505' && error.detail.includes("email")  ) {
+        throw new ForbiddenException("Пользователь с таким email уже зарегистрирован");
+      }
+      if (error.code === '23505' && error.detail.includes("username")  ) {
+        throw new ForbiddenException("Пользователь с таким username уже зарегистрирован");
       }
       return error;
     }

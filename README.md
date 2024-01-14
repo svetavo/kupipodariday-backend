@@ -1,5 +1,7 @@
 **КупиПодариДай**
 
+ENGLISH BELOW 
+
 Бэкенд (API) для сервиса вишлистов, созданный с помощью Nestjs. Для взаимодейтсвия с базой данных спользуются такие методы HTTP, как GET, POST, PATCH, DELETE.
 
 **Функционал:**
@@ -23,3 +25,28 @@
 
 **Фронтенд для тестирование корректной работы фронтенда и бэкенда:**
 https://github.com/yandex-praktikum/kupipodariday-frontend
+
+**ENGLISH:**
+
+Back-end (API) for wishlists service created with Nestjs. HTTP methods used for connection to data base: GET, POST, PATCH, DELETE.
+
+**Functionality:**
+- registration and authorisation
+- user profile editing
+- wishlists creation
+
+**Stack:**
+- TypeScript
+- NestJS  
+- PostgreSQL  
+- NodeJS
+
+**Running:**
+
+    npm i
+   
+    npm run start:dev
+
+**Front-end repository for testing:**
+https://github.com/yandex-praktikum/kupipodariday-frontend
+
